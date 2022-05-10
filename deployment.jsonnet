@@ -2,7 +2,8 @@ local deployment = {
   kind: 'Deployment',
   apiVersion: 'apps/v1',
   metadata: {
-      name: 'test-deployment'
+      name: 'test-deployment',
+      namespace: 'dovetail-sandbox'
   },
   spec: {
       replicas: 1,
