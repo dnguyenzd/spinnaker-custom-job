@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: generate-manifests
+  namespace: spinnaker
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      containers:
+        - command:
+            - /app/spinnaker-custom-job/generate.sh
+          image: bitnami/jsonnet
+          name: jsonnet
+          volumeMounts:
+            - mountPath: /app
+              name: app
+      initContainers:
+        - args:
+            - clone
+            - 'https://github.com/dnguyenzd/spinnaker-custom-job.git'
+            - /app/spinnaker-custom-job
+          command:
+            - git
+          image: bitnami/git
+          name: git
+          volumeMounts:
+            - mountPath: /app
+              name: app
+      restartPolicy: Never
+      volumes:
+        - emptyDir: {}
+          name: app
